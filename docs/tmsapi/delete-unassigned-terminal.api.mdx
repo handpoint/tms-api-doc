@@ -1,0 +1,61 @@
+---
+id: delete-unassigned-terminal
+title: "Removes an existing payment terminal from the partner profile."
+description: "This endpoint will delete a terminal from the terminal management system The terminal needs to be unassigned from amy merchant in order for this operation to be successful."
+sidebar_label: "Removes an existing payment terminal from the partner profile."
+hide_title: true
+hide_table_of_contents: true
+api: eJztV99v2zYQ/lcIPbWAZytJ3TjGMCBp3NVbshi2kg7I+kBLZ5utRGoklcYz9L/vjvppO0vQtC8D8qQjeXf87uPpeNx4EZhQi9QKJb2hF6yEYSCjVAlp2VcRxyyCGCwwzizoREges4VWCbMraGYSLvkSEkAbszYWEha0lyVAZJhVbA4sk9wYsZQQFX54smYJ6HDF0VhIpnQEmi2Uxh0Qi0pBcwJXmpssDMGYRRZ32V/S63i1wjhC/AXY63qPoISAipYvjTe89eqpTx0v5ZonaKBpZeNJHKCTCnewTgENNfydCQ3o3uoMOp4golJuV7i2zd4YIzAFM2jK1GKbpSKCAmLURWsTriDh3nDjkT46MFYLudzzG9QeyK3J0lRpdMHma7dBcDnrEuFIJF/jFrGSS9osEosFaDqUueYyMkM24fcdFkCcqg475xZCJFizG6Ftht6rbUzXMQsyS4iwy8no/I3v4wxJAyd9GF+Mg5ETJhfXs0KYXrnv+/ENrZxN+n65Njn98/Tk0C+lQSUcH5dCv5w5qlaO+qXwtpo5OfAbR8VOblCbTMej2duWPCjkUd8vNUbHtTTwGyylNL50noLRxeQqmMxO/K3RYLA1OmmNjg7ba0dbdijeBJRnVtgYWgfpMivPO3XKGdCCx39kyRz0M1OucMGk8/EDc+8p10WyJPz+AuQSEQ4P/SbgWTuudsD451kJGn/a50U7Pq9wlJ6KavJ1JcLVduSuiD0v9t3t1irT9X6pVgsRA3uFwp2Iit/xAy9r5+tdVvrICgKqhgcNR5OSinMkCHPFQJhpYdeuIp0B16BPMzK5/UTLGkyqpAFD8A8x3fCzjfrqdy/veG8eWjrjEZsi22AsoguVtFgdSI2naSxCV0d7nw3pbvZZUvPPEJIhRoxV14oCRKgieJrLkdZYaki3S/A08HKbx82mTq86ayAnzj7BSwCvnF8zET3t5LJQZkvU3nWVNwfhIOJM7ug72KcP7xU8CaXFPxC98PcEf0f7/L1Xei6iCOQLeU+Qd7JP3jslF0jTy4/7OHf9h+reGPnSdBngfXSHtbsweCHyv4l0G2Cta5pqipru5KHXK6/AXgR3IoTept0w571Nu5nJa+VNfeXndAW7gyja7kzH6HVlbWqGvR71tthVrKqbtBuqZC8e5D9ip5Mxm3MD9YPFa9+fMzq84nzat2jNFO1X9QI0njslnCkErFUJx8zwfvsYOI6EXChnXvVylzP2EeaEAo0omAKa3/W7Bz9N37mGdb+XIjMCvhR3YJp+oWorinajZVadVv3OMe45he0G9XTFw4sUhK6fUYah17oBct084k+VsahOIZQ92BQSRSC4ZHAvjMXEQRhr94zbf+zt9D3d3eg2zd/0P3xGlklh4d720pgLR5lLzE2Z9rdVz+oCp8RHYbjzVhzuNPKNybDpeDFJV3gY5HKzoQS+1nGe0zR2ZpoaPxTvODqaU6bhHxIJQzL+jAs8UHiE+VfTspl+zb71NfogBeUkl2tKch5nNELxC6x3X8rU3X8n0G98wzwD8db5/ADE3/UOeQb+JovyT6i8Ao557nKkWD/FvE5ty3LvXqMaWZf289HFyL3j+XZx3CmGboMHgf1c1FYWqC8gf2kSg4YEMc//BZc0PCs=
+sidebar_class_name: "delete api-method"
+info_path: docs/tmsapi/tms-web-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Removes an existing payment terminal from the partner profile.</h1>
+
+<MethodEndpoint method={"delete"} path={"/partner/device/{terminalType}/{serialNumber}/partner/{partnerId}"}></MethodEndpoint>
+
+
+
+This endpoint will delete a terminal from the terminal management system The terminal needs to be unassigned from amy merchant in order for this operation to be successful. 
+
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"terminalType","required":true,"in":"path","description":"It is the type of the terminal to be deleted.","schema":{"type":"string","description":"Terminal type supported by the TMS. They may belong to different brands: Pax, Telpo, Datecs or Virtual Terminals.\n","enum":["MPED400","MPED800","HILITE","HIPLUS","HIPRO","HIFIVE","BP50PLUS","PAXA920","PAXA80","PAXA77","PAXA50","PAX30","PAXA35","PAXA60","PAXA910","PAXA920PRO","PAXA930","PAXARIES6","PAXARIES8","PAXE500","PAXE700","PAXE800","PAXA800","PAXIM30","TELPOTPS900","TELPOTPS988","TELPOTPS989","TELPOTPS328","TELPOTPS300","TELPOTPS","VT"],"title":"TerminalType"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"serialNumber","required":true,"in":"path","description":"It is the serial number of the terminal to be deleted.","schema":{"type":"string","description":"The serial number of the terminal.\n","maxLength":20,"title":"SerialNumber"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"partnerId","required":true,"in":"path","description":"It is the ID of the partner from which the terminal will be deleted.","schema":{"type":"string","description":"It is the ID of your partner profile (provided by Handpoint)\n","maxLength":50,"minLength":1,"title":"PartnerID"}}}></ParamsItem></ul></div></details><div><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+
+OK
+
+</div><div></div></TabItem><TabItem label={"400"} value={"400"}><div>
+
+Bad Request
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"401"} value={"401"}><div>
+
+Unauthorized
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"403"} value={"403"}><div>
+
+Forbidden
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"409"} value={"409"}><div>
+
+Conflict
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

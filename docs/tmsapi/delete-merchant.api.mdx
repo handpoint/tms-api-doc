@@ -1,0 +1,61 @@
+---
+id: delete-merchant
+title: "Deletes an existing merchant."
+description: "This endpoint will delete the merchant profile from the TMS.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted."
+sidebar_label: "Deletes an existing merchant."
+hide_title: true
+hide_table_of_contents: true
+api: eJztV99v2zYQ/lcIPrWAZzvd+jBjKJDW2eYtwYrERR/SPNDS2WIrkeqRSuIJ+t93R/2wFKcxlm3AHvwkirw73n13R34sZQwuQp17bY2cyWWinQAT51YbL+50mooYUvAgfAIiA4wSRQs52rVOQazRZmFleXE1FmKxHoolygkPmGmjUieUc3pjIBZ3CRjhcavNRnjbbqD9SGxtUW+KEIG+BaGMAESLZHy5b4iUB/utNTovDNRLKxCF6WRXsLb4IIyIzJNU7UA8/mTkSNocUDEai5jwqJcuGgVa9mrj5OxadlM3I5krVBmJIa+U0tAPqdKsN4BkZiQRvhYagSx6LGAktQkCPqG1YQIWXlAG2MvFXNgaz8YS4WaFvTNuEMSYTLgogUzJWSn9Nue9nUcC96Bxghs7621OX9DgVscM2Vb8qppaeBnAydT9OZgN+T17PaVfbdrfE4JG+5Q3f98EPpdVNergaP19Fh6KMqm/FrDzhyOghA6gGFENiaygEgipDwoqQuucOD0/5xrtRN24ZypUXBM1bYXKbIDhWcwZLNXVSeEIlHpT8ikvMLcO/j7+/0Uw/1o0D9P86ptpbjsg5Jm6wEFUoPbb0ANvQSHgacE61ze8jOByaxw4hunVdMqfITp//C6rkfzhsaW3KhaXVDPguAcjazxQ65GYyvNUR6FfJ58dy5b72bCrzxCxIqFC3e117URkYzicszM+fgTLjtk9BNVs87TaZZBrO7g+w1g/A+fUBn4pdHzYyEUtLDYk/dBUtctEcJFmqgDfyT58H4yiTFjUf0J8xO8Aft/v4/ezxZWOYzBH8A6A9+M+eO+sWRNMx8Z9GrvXj517C8ILifOIK8BbuqNrhSOQ3wYybEBn3Y68cdTMLGZy0lCd7lt2HK2atJfppNwxlYrv9oB8zewKTMlM4n3uZpNJbtGrdJy0N+84stleAAR4LE7fL8RKOeiYtexfmFecrToh/Wuzg4b3a0kG/6+CEM3UAzqcMkWlIH/7uAygaLO2Qb0Bh6nCR1ixF6TEwdSuTcfT8cl3l+9OpnteL2tKHxzfEA93PX7RYFbzyJ5am56OQLvAxIlkMBnPlOE8koDGHXEhfh/vXghMPsh/4iGexDmEhjvOQyJdeA3ca+f54dDnvwPny113HJ8zbQ15uPeTPFU6IBzquGza4rp9qYRGaUez/vMl271/Zj0eTzWcUK7YRFlyfX/AtKp4mpgaMhGk4a1CrVZciNRAsXY8puZcU+TwROZeXDZPhJfiWU+iR+NuJpXZciOotOA/Gn6B7eDBxs+Wf+Dq//y18gxoekmvbkg6ARVTmXBKa4HTKILc91T3riU+8bqTeX52frY8I3E1POoeHG1hg0c9+6k+KcXSfgHzpvPT8y+7WFV/AXao1Eg=
+sidebar_class_name: "delete api-method"
+info_path: docs/tmsapi/tms-web-api
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import TabItem from "@theme/TabItem";
+
+<h1 className={"openapi__heading"}>Deletes an existing merchant.</h1>
+
+<MethodEndpoint method={"delete"} path={"/partner/partner/{partnerId}/merchant/{merchantId}"}></MethodEndpoint>
+
+
+
+This endpoint will delete the merchant profile from the TMS.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted.
+
+
+## Request
+
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"partnerId","required":true,"in":"path","description":"It is the ID of the partner who owns the merchant.","schema":{"type":"string","description":"It is the ID of your partner profile (provided by Handpoint)\n","maxLength":50,"minLength":1,"title":"PartnerID"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"merchantId","required":true,"in":"path","description":"It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.","schema":{"type":"string","description":"It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants.  Handpoint will provide a range of IDs that can be used for this purpose.\n","maxLength":20,"minLength":1,"title":"MerchantID"}}}></ParamsItem></ul></div></details><div><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+
+OK
+
+</div><div></div></TabItem><TabItem label={"400"} value={"400"}><div>
+
+Bad Request
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"401"} value={"401"}><div>
+
+Unauthorized
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"403"} value={"403"}><div>
+
+Forbidden
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"409"} value={"409"}><div>
+
+Conflict
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div><MimeTabs className={"openapi-tabs__mime"} schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs className={"openapi-tabs__schema"}><TabItem label={"Schema"} value={"Schema"}><details style={{}} className={"openapi-markdown__details response"} data-collapsed={false} open={true}><summary style={{}} className={"openapi-markdown__details-summary-response"}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"code"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Error code."}}></SchemaItem><SchemaItem collapsible={false} name={"reason"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Reason of the error."}}></SchemaItem><SchemaItem collapsible={false} name={"messageGuid"} required={false} schemaName={"string"} qualifierMessage={undefined} schema={{"type":"string","description":"Message guid of the error."}}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"code\": \"string\",\n  \"reason\": \"string\",\n  \"messageGuid\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div></div>
+      

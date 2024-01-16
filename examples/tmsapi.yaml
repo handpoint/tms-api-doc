@@ -1,21 +1,19 @@
 openapi: "3.0.0"
 info:
-  title: TMS Web API
+  title: Terminal and Merchant Management System (TMS) Web API
   version: 0.0.1-RC10
   description: >
     The TMS API gives Handpoint partners the description of the operations needed 
-    to manage their merchants and terminals.
+    to efficiently manage their merchants and terminals.
 servers:
   - url: https://portal.handpoint.com
     description: prod API base endpoint
-security:
-  - BearerAuth: [ ]
 paths:
   /ops/login:
     post:
-      summary: Authenticate with the TMS and logs into the application. 
+      summary: Authenticate against the API
       description: >
-        The login endpoint returns a JWT token that should be used in the 
+        The login endpoint returns a JSON web token that should be used in the 
         Authorization header of all subsequent requests.
       operationId: login
       tags:
@@ -59,10 +57,10 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/partner/{partnerId}/devices/assign:
     put:
-      summary: Creates an unassigned payment terminal at partner level.
+      summary: Create a payment terminal
       description: >
-        This endpoint will create a payment terminal with the given serial number and terminal type.
-        It will be added to the partner pool of unassigned terminals.
+        This endpoint will create a payment terminal under your partner profile.
+        It will be added to your pool of unassigned terminals.
       operationId: createUnassignedTerminal
       tags:
         - Terminal
@@ -70,11 +68,11 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who will own the terminal.
+          description: Your partner Id (provided by Handpoint).
           schema:
             $ref: "#/components/schemas/PartnerID"
       requestBody:
-        description: The terminal data to be created.
+        description: The terminal information to be created. 
         required: true
         content:
           application/json:
@@ -117,10 +115,10 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/device/{terminalType}/{serialNumber}/partner/{partnerId}:
     delete:
-      summary: Removes an existing payment terminal from the partner profile. 
+      summary: Delete a payment terminal
       description: >
-        This endpoint will delete a terminal from the terminal management system
-        The terminal needs to be unassigned from amy merchant in order for this operation to be successful. 
+        This endpoint will delete a terminal from the terminal management system.
+        The terminal needs to be unassigned from any merchant for this operation to be successful. 
       operationId: deleteUnassignedTerminal
       tags:
         - Terminal
@@ -128,19 +126,19 @@ paths:
         - name: terminalType
           required: true
           in: path
-          description: It is the type of the terminal to be deleted.
+          description: Type of the terminal to be deleted.
           schema:
             $ref: "#/components/schemas/TerminalType"
         - name: serialNumber
           required: true
           in: path
-          description: It is the serial number of the terminal to be deleted.
+          description: Serial number of the terminal to be deleted.
           schema:
             $ref: "#/components/schemas/SerialNumber"
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner from which the terminal will be deleted. 
+          description: ID of the partner from which the terminal will be deleted. 
           schema:
             $ref: "#/components/schemas/PartnerID"
       security:
@@ -180,12 +178,13 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/partner/{partnerId}/publish/{terminalType}/{serialnumber}:
     post:
-      summary: Publishes a payment terminal configuration to the Handpoint Gateway.
+      summary: Publish a payment terminal configuration to the Handpoint Gateway
       description: >
-        Using data from the partner, acquirer and merchant this endpoint
-        will push the terminal configuration to the Handpoint Gateway. 
+        Using data from your partner profile as well as the acquirer and merchant profile,
+        this endpoint will push the automatically generated terminal configuration to the Handpoint Gateway. 
         For the terminal to properly start up and initialise, 
-        it is required for the configuration to be published to the Handpoint Gateway.
+        it is required for the terminal configuration to be published to the Handpoint Gateway.
+        For example, this endpoint needs to be called after assigning a terminal to a merchant. 
       operationId: publishTerminal
       tags:
         - Terminal
@@ -193,19 +192,19 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the terminal.
+          description: ID of the partner who owns the terminal.
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: terminalType
           required: true
           in: path
-          description: It is the type of the terminal to be published.
+          description: Type of terminal to be published.
           schema:
             $ref: "#/components/schemas/TerminalType"
         - name: serialnumber
           required: true
           in: path
-          description: It is the serial number of the terminal to be assigned.
+          description: Serial number of the terminal to be assigned.
           schema:
             $ref: "#/components/schemas/SerialNumber"
       security:
@@ -245,12 +244,12 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/partner/{partnerId}/terminal/{terminalType}/{serialnumber}:
     delete:
-      summary: Removes an existing payment terminal from its merchant.
+      summary: Unassign a payment terminal from a merchant
       description: >
         This endpoint will unassign a terminal from its merchant.
         It is necessary to publish the configuration after this operation 
-        so we can keep up to date the config published to the Handpoint Gateway.
-        It will leave the terminal unassigned from any merchant and will
+        to keep the terminal management system in sync with the Handpoint Gateway.
+        This operation will leave the terminal unassigned from any merchant and will
         become part of the pool of terminals ready to be assigned.
       operationId: unassignTerminal
       tags:
@@ -265,13 +264,13 @@ paths:
         - name: terminalType
           required: true
           in: path
-          description: It is the type of the terminal to be removed.
+          description: Type of terminal to be unassigned.
           schema:
             $ref: "#/components/schemas/TerminalType"
         - name: serialnumber
           required: true
           in: path
-          description: It is the serial number of the terminal to be removed.
+          description: Serial number of the terminal to be unassigned.
           schema:
             $ref: "#/components/schemas/SerialNumber"
       security:
@@ -310,9 +309,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
-      summary: Assigns a payment terminal to a merchant.
+      summary: Assign a payment terminal to a merchant
       description: >
-        This endpoint takes an already created terminal (part of the pool of unassigned terminals)
+        Takes an already created terminal (part of the pool of unassigned terminals)
         and assigns it to an already existing merchant. 
         A terminal can only be assigned to one merchant at a time. 
         If it is already assigned to another merchant you will receive an error. 
@@ -325,19 +324,19 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the terminal.
+          description: ID of the partner who owns the terminal.
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: terminalType
           required: true
           in: path
-          description: It is the type of the terminal to be assigned.
+          description: Type of terminal to be assigned.
           schema:
             $ref: "#/components/schemas/TerminalType"
         - name: serialnumber
           required: true
           in: path
-          description: It is the serial number of the terminal to be assigned.
+          description: Serial number of the terminal to be assigned.
           schema:
             $ref: "#/components/schemas/SerialNumber"
       requestBody:
@@ -384,9 +383,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/partner/{partnerId}/merchant/{merchantId}:
     delete:
-      summary: Deletes an existing merchant.
+      summary: Delete a merchant
       description: >
-        This endpoint will delete the merchant profile from the TMS. 
+        This endpoint will delete the merchant profile from the terminal management system. 
         If the merchant has terminals assigned when trying to delete it, you will receive an error. 
         Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted.
       operationId: deleteMerchant
@@ -396,13 +395,13 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: The ID of the merchant to be deleted. 
           schema:
             $ref: "#/components/schemas/MerchantID"
       security:
@@ -441,11 +440,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     get:
-      summary: Retrieves an existing merchant.
+      summary: Retrieve a merchant profile
       description: >
-        Gets data about an existing merchant.
-        Depending on the details of the merchant (acquirer assigned etc.),
-        the response back might vary in terms of fields.
+        Gets the profile of an existing merchant, including authentication information like shared secret. 
+        Depending on the details of the merchant (acquirer, features enabled etc.),
+        the response back will vary in terms of fields.
       operationId: getMerchant
       tags:
         - Merchant
@@ -453,19 +452,19 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: ID of the merchant to be retrieved. 
           schema:
             $ref: "#/components/schemas/MerchantID"
         - name: detail
           required: true
           in: query
-          description: Details of the merchant to be returned.
+          description: Merchant Profile.
           schema:
             type: string
             enum: [ "merchantobject", "merchantlite", "merchantid" ]
@@ -509,10 +508,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      summary: Creates a new merchant.
+      summary: Create a merchant
       description: >
         This endpoint creates a new merchant under your partner profile.
-        The body of the request will need data aligned with the partner's
+        The body of the request will need data aligned with your partner
         configuration, i.e. ISV id used, acquirer id used, etc.
       operationId: createMerchant
       tags:
@@ -521,7 +520,7 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
@@ -577,13 +576,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
-      summary: Updates a already created merchant.
+      summary: Update an already created merchant
       description: >
         This endpoint updates an already created merchant under your partner profile.
-        The body of the request will need data aligned with the partner's
+        The body of the request will need data aligned with your partne
         configuration, i.e. ISV id used, acquirer id used, etc.
-        Once updated, if it has assigned terminal, we should publish changes for them
-        so they get the new config values.
+        Once updated, if the merchant has assigned terminal, the changes should be published 
+        to the Handpoint Gateway. 
       operationId: updateMerchant
       tags:
         - Merchant
@@ -591,13 +590,13 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: ID of the merchant to be updated. 
           schema:
             $ref: "#/components/schemas/MerchantID"
       requestBody:
@@ -648,9 +647,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/cloudpos/partner/{partnerId}/enabled:
     get:
-      summary: Retrieves the cloud pos enabled status for a partner.
+      summary: Retrieve the cloud status of a partner
       description: >
-        Gets the cloud pos enabled status for a partner.
+        Allows you to know if a partner is cloud enabled, meaning that the partner is able to send transactions over the cloud to payment terminals using a cloud API key .
       operationId: getPartnerCloudPosEnabled
       tags:
         - PartnerCloudPos
@@ -658,7 +657,7 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
       security:
@@ -696,9 +695,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/cloudpos/{partnerId}/keys:
     get:
-      summary: Retrieves the list of cloud pos api keys for a partner.
+      summary: Retrieve the API key(s) of a partner
       description: >
-        Gets the list of cloud pos api keys created for the partner.
+        Gets the list of cloud API keys previously created for the partner.
       operationId: getPartnerApiKeys
       tags:
         - PartnerCloudPos
@@ -706,7 +705,7 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner.
+          description: ID of the partner.
           schema:
             $ref: "#/components/schemas/PartnerID"
       security:
@@ -743,9 +742,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      summary: Creates a new cloud pos api key for a partner.
+      summary: Create a cloud API key for a partner
       description: >
-        Creates a new cloud pos api key for a partner with a name. The response will yield the api key unmasked value.
+        Creates a new cloud API key for a partner. The API response will return the API key unmasked.
       operationId: createPartnerApiKey
       tags:
         - PartnerCloudPos
@@ -753,11 +752,11 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner.
+          description: ID of the partner.
           schema:
             $ref: "#/components/schemas/PartnerID"
       requestBody:
-        description: The api key name to be created.
+        description: The name for the API key to be created. The name is used as part of the randomisation process generating the API key. 
         required: true
         content:
           application/json:
@@ -804,9 +803,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/cloudpos/{partnerId}/keys/{keyName}:
     delete:
-      summary: Deletes a cloud pos api key for a partner.
+      summary: Delete a cloud API key for a partner
       description: >
-        Deletes a cloud pos api key for a partner.
+        Deletes a cloud api key for a partner.
       operationId: deletePartnerApiKey
       tags:
         - PartnerCloudPos
@@ -814,13 +813,13 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: ID of the partner.
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: keyName
           required: true
           in: path
-          description: It is the name of the api key to be deleted.
+          description: Name of the API key to be deleted.
           schema:
             type: string
       security:
@@ -854,9 +853,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/cloudpos/partner/{partnerId}/merchant/{merchantId}/keys:
     get:
-      summary: Retrieves the list of cloud pos api keys for a merchant
+      summary: Retrieve the cloud API keys of a merchant
       description: >
-        Gets the list of cloud pos api keys created for the merchant.
+        Gets the list of cloud API keys previously created for the merchant.
       operationId: getMerchantApiKeys
       tags:
         - MerchantCloudPos
@@ -864,13 +863,13 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: ID of the merchant. 
           schema:
             $ref: "#/components/schemas/MerchantID"
       security:
@@ -907,9 +906,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      summary: Creates a new cloud pos api key for a merchant
+      summary: Create a cloud API key for a merchant
       description: >
-        Creates a new cloud pos api key for a merchant with a name. The response will yield the api key unmasked value.
+        Creates a new cloud API key for a merchant. The API response will contain the API key unmasked. 
       operationId: createMerchantApiKey
       tags:
         - MerchantCloudPos
@@ -917,17 +916,17 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: ID of the merchant. 
           schema:
             $ref: "#/components/schemas/MerchantID"
       requestBody:
-        description: The api key name to be created.
+        description: The name for the API key to be created. The name is used as part of the randomisation process generating the API key.
         required: true
         content:
           application/json:
@@ -974,9 +973,9 @@ paths:
                 $ref: '#/components/schemas/Error'
   /partner/cloudpos/partner/{partnerId}/merchant/{merchantId}/keys/{keyName}:
     delete:
-      summary: Deletes a cloud pos api key for a merchant
+      summary: Delete a cloud API key of a merchant
       description: >
-        Deletes a cloud pos api key for a merchant.
+        Deletes a cloud API key from a merchant.
       operationId: deleteMerchantApiKey
       tags:
         - MerchantCloudPos
@@ -984,19 +983,19 @@ paths:
         - name: partnerId
           required: true
           in: path
-          description: It is the ID of the partner who owns the merchant.
+          description: Your partner ID. 
           schema:
             $ref: "#/components/schemas/PartnerID"
         - name: merchantId
           required: true
           in: path
-          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          description: ID of the merchant.
           schema:
             $ref: "#/components/schemas/MerchantID"
         - name: keyName
           required: true
           in: path
-          description: It is the name of the api key to be deleted.
+          description: Name of the API key to be deleted.
           schema:
             type: string
       security:
@@ -1038,7 +1037,7 @@ components:
     PartnerID:
       type: string
       description: >
-        It is the ID of your partner profile (provided by Handpoint)
+        ID of your partner profile (provided by Handpoint)
       maxLength: 50
       minLength: 1
     MerchantID:
@@ -1055,11 +1054,11 @@ components:
         - password
       properties:
         username:
-          description: The username of the partner's user created in the Handpoint terminal management system (TMS).
+          description: The username of your terminal management system (TMS) account.
           type: string
           maxLength: 50
         password:
-          description: Password for the user created in the Handpoint terminal management system (TMS).
+          description: The password of your terminal management system (TMS) account.
           type: string
           writeOnly: true
     LoginResponse:
@@ -1144,7 +1143,7 @@ components:
             Additional merchant ids provided by the acquirer.
           items:
             type: string
-            description: MID provided by the acquirer value.
+            description: Value of the merchant id provided by the acquirer.
             maxLength: 50
         defaultAcquirerTid:
           type: string
@@ -1287,7 +1286,7 @@ components:
         apiKey:
           type: string
           description: >
-            The api key of the card token provider.
+            The API key of the card token provider.
         partnerSupportsTokenization:
           type: boolean
           description: >
@@ -1297,13 +1296,13 @@ components:
         anyApiKeyDefinedByPartner:
           type: boolean
           description: >
-            Indicates if the partner has any api key defined.
+            Indicates if the partner has any API key defined.
           default: false
           readOnly: true
         anyApiKeyDefinedByIsv:
           type: boolean
           description: >
-            Indicates if the isv has any api key defined.
+            Indicates if the isv has any API key defined.
           default: false
           readOnly: true
     TerminalType:
@@ -1374,7 +1373,7 @@ components:
           maxLength: 100
         partnerFullName:
           type: string
-          description: The name of the partner. This will be provided by Handpoint
+          description: Your partner name. This will be provided by Handpoint
           readOnly: true
         locationName:
           type: string
@@ -1476,7 +1475,7 @@ components:
           type: string
         partnerCloudPosEnabled:
           type: boolean
-          description: True if partner has cloud api access enabled. Handpoint will enable this parameter on your partner profile.
+          description: True if partner has cloud API access enabled. Handpoint will enable this parameter on your partner profile.
           default: false
           readOnly: true
         cardTokenProviderInfo:
@@ -1528,7 +1527,7 @@ components:
           description: >
             Theme ID configured for the merchant. A theme allows you to customize the logos and colors
             appearing ih the Handpoint payments app for PAX devices to match your brand.
-            Contact the Handpoint team if you want us to build a theme for your terminals.
+            Contact the Handpoint team if you want us to build a theme for your terminals. Not relevant for Datecs devices.
           maxLength: 50
         creationDate:
           type: string
@@ -1575,7 +1574,7 @@ components:
         multipleTypeAssignments:
           type: array
           description: >
-            List of terminal types and serial numbers that will be created at partner level and added to your pool of unassigned devices.
+            List of terminals that will be created at partner level and added to your pool of unassigned devices.
             Once created, the terminals can be assigned to merchants.
           items:
             $ref: "#/components/schemas/UnassignedTerminalData"
@@ -1600,7 +1599,7 @@ components:
         terminalStatus:
           type: string
           description: >
-            The status of the terminal for assign operation the previous status should be UNASSIGNED.
+            The status of the terminal, for assign operation the previous status should be UNASSIGNED.
           enum:
             - U
         partnerId:
@@ -1677,7 +1676,7 @@ components:
         enabled:
           type: boolean
           description: >
-            True if cloud pos is enabled.
+            True if cloud connectivity is enabled.
           default: false
     PartnerCloudPosKeys:
       type: object
@@ -1686,7 +1685,7 @@ components:
       properties:
         keyList:
           type: array
-          description: List of api keys created for the partner.
+          description: List of API keys created for the partner.
           items:
             $ref: "#/components/schemas/PartnerMaskedCloudPosKey"
     PartnerMaskedCloudPosKey:
@@ -1699,11 +1698,11 @@ components:
         key:
           type: string
           description: >
-            The api key masked value.
+            The API key masked value.
         keyName:
           type: string
           description: >
-            The api key name.
+            The API key name.
         partnerIdAlpha:
           $ref: "#/components/schemas/PartnerID"
     CreatedPartnerCloudPosApiKey:
@@ -1716,11 +1715,11 @@ components:
         key:
           type: string
           description: >
-            The api key unmasked value.
+            The API key unmasked value.
         keyName:
           type: string
           description: >
-            The api key name.
+            The API key name.
         partnerIdAlpha:
           $ref: "#/components/schemas/PartnerID"
     MerchantCloudPosKeys:
@@ -1730,7 +1729,7 @@ components:
       properties:
         keyList:
           type: array
-          description: List of api keys created for the merchant.
+          description: List of API keys created for the merchant.
           items:
             $ref: "#/components/schemas/MerchantMaskedCloudPosKey"
     MerchantMaskedCloudPosKey:
@@ -1744,15 +1743,15 @@ components:
         key:
           type: string
           description: >
-            The api key masked value.
+            The API key masked value.
         keyName:
           type: string
           description: >
-            The api key name.
+            The API key name.
         maskedKey:
           type: string
           description: >
-            The api key masked value.
+            The API key masked value.
         merchantIdAlpha:
           $ref: "#/components/schemas/MerchantID"
     CreateCloudPosApiKey:
@@ -1764,7 +1763,7 @@ components:
           type: string
           maxLength: 20
           description: >
-            The api key name.
+            The API key name.
     CreatedMerchantCloudPosApiKey:
       type: object
       required:
@@ -1775,10 +1774,10 @@ components:
         key:
           type: string
           description: >
-            The api key unmasked value.
+            The API key unmasked value.
         keyName:
           type: string
           description: >
-            The api key name.
+            The API key name.
         merchantIdAlpha:
           $ref: "#/components/schemas/MerchantID"

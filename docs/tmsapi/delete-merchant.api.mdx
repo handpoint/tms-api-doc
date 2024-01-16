@@ -1,14 +1,15 @@
 ---
 id: delete-merchant
-title: "Deletes an existing merchant."
-description: "This endpoint will delete the merchant profile from the TMS.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted."
-sidebar_label: "Deletes an existing merchant."
+title: "Delete a merchant"
+description: "This endpoint will delete the merchant profile from the terminal management system.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted."
+sidebar_label: "Delete a merchant"
 hide_title: true
 hide_table_of_contents: true
-api: eJztV99v2zYQ/lcIPrWAZzvd+jBjKJDW2eYtwYrERR/SPNDS2WIrkeqRSuIJ+t93R/2wFKcxlm3AHvwkirw73n13R34sZQwuQp17bY2cyWWinQAT51YbL+50mooYUvAgfAIiA4wSRQs52rVOQazRZmFleXE1FmKxHoolygkPmGmjUieUc3pjIBZ3CRjhcavNRnjbbqD9SGxtUW+KEIG+BaGMAESLZHy5b4iUB/utNTovDNRLKxCF6WRXsLb4IIyIzJNU7UA8/mTkSNocUDEai5jwqJcuGgVa9mrj5OxadlM3I5krVBmJIa+U0tAPqdKsN4BkZiQRvhYagSx6LGAktQkCPqG1YQIWXlAG2MvFXNgaz8YS4WaFvTNuEMSYTLgogUzJWSn9Nue9nUcC96Bxghs7621OX9DgVscM2Vb8qppaeBnAydT9OZgN+T17PaVfbdrfE4JG+5Q3f98EPpdVNergaP19Fh6KMqm/FrDzhyOghA6gGFENiaygEgipDwoqQuucOD0/5xrtRN24ZypUXBM1bYXKbIDhWcwZLNXVSeEIlHpT8ikvMLcO/j7+/0Uw/1o0D9P86ptpbjsg5Jm6wEFUoPbb0ANvQSHgacE61ze8jOByaxw4hunVdMqfITp//C6rkfzhsaW3KhaXVDPguAcjazxQ65GYyvNUR6FfJ58dy5b72bCrzxCxIqFC3e117URkYzicszM+fgTLjtk9BNVs87TaZZBrO7g+w1g/A+fUBn4pdHzYyEUtLDYk/dBUtctEcJFmqgDfyT58H4yiTFjUf0J8xO8Aft/v4/ezxZWOYzBH8A6A9+M+eO+sWRNMx8Z9GrvXj517C8ILifOIK8BbuqNrhSOQ3wYybEBn3Y68cdTMLGZy0lCd7lt2HK2atJfppNwxlYrv9oB8zewKTMlM4n3uZpNJbtGrdJy0N+84stleAAR4LE7fL8RKOeiYtexfmFecrToh/Wuzg4b3a0kG/6+CEM3UAzqcMkWlIH/7uAygaLO2Qb0Bh6nCR1ixF6TEwdSuTcfT8cl3l+9OpnteL2tKHxzfEA93PX7RYFbzyJ5am56OQLvAxIlkMBnPlOE8koDGHXEhfh/vXghMPsh/4iGexDmEhjvOQyJdeA3ca+f54dDnvwPny113HJ8zbQ15uPeTPFU6IBzquGza4rp9qYRGaUez/vMl271/Zj0eTzWcUK7YRFlyfX/AtKp4mpgaMhGk4a1CrVZciNRAsXY8puZcU+TwROZeXDZPhJfiWU+iR+NuJpXZciOotOA/Gn6B7eDBxs+Wf+Dq//y18gxoekmvbkg6ARVTmXBKa4HTKILc91T3riU+8bqTeX52frY8I3E1POoeHG1hg0c9+6k+KcXSfgHzpvPT8y+7WFV/AXao1Eg=
+api: eJztV91v2zgM/1cEPbVAlqS728MFw4Bu6d1l12JDm2E49Pqg2HSszZY8Su6WGf7fR8of+Wx723OeLEskRf5ISj9VMgYXoS68tkZO5DzVToCJC6uNF191lokYMvAgfAoiB4xSRQsF2kRnIBK0eVjxgLk2KhO5MmoJOZCQWzkP+VCIWbKtnSrXKzihnNNLA7H4moIRHlfaLIW33b7aD8TKlo0vCBHoexDKCEC0SMbn+4ZIeWu/RKPzwkCztABRml52AYnFnegiMk9SjQPx8D8jB9IWgIpBmsUEU7N01SrQsldLJye3sp+6G8hCocpJDHmlkoZ+SJVmvQEkMwOJ8KXUCGTRYwkDqU0Q8CmtbeflX1uiaFXFbDokARelkCs5qaRfFWzZeSTo9lRnU2EThnBtoEvfCQ3udcwwrMTfqk37aQg4V98uwSzJl8mLMf1q0/2eUbjaZ7zl+zaYqazrQR9iB+RPxjinHDTObmWjSVmXjJ8J3AsqZkXZ1l9KWMfHm1DSt3YZUJ2JvKQyCeURFFSE1jlxfnkp5lc3vaijolvbCmXZwkh7oTJL4BBmU6rxVPXFVDpCudmVnCpKLKyD4S7Szx9EuiusADUVl4OoRO1XobReg0LA85J1bu94GcEV1jhwDNPz8Zg/2+i8+0fWA/n7oaXXKhbXlDZwXNqRNZ7amcVUUWQ6Cm0w+uRYttrPhl18gogVCRVqGq8bJyIbw9M5u+CuFiw7ZPcQVLvN42rXQa4rneZoYP0cnKPj6K9Sx08buWqExZKkd03V60wEF2mmDvCd7cP3wSjKhEX9HeIjfk/g99s+fn9aXOg4BnME7wnw/tgH7401CcF0bNzHsXtx6NybEV7IJOYG8J6uyUbhCOTDQIYN6KxbcyKOmi/3iRy1bKP/Vj31qUfdZTqq1mSh5rs9IN8QphIzMpN6X7jJaFRY9Cobpt3NO4xsvhcAAR6L8/czsVAOeh4rNy/MG85Wk5DNa7OHhvfrSAb/L4IQzTQDOpxyRaUg336cB1C0SWxQb8Hp+Chx1Fh0t7a4WtPim0CLxQlxilPxERbsL5nnsJsgxsPx8OzZ9Zuz8UGKxFyEQ1wSEXYbTKRF14Wsbah1iewZrAtUmOgIUytIEh1p8itbtdydhTWu6U4IpKfrTFkoamIvnsQ58Jb0TRu6rnrFXeerdR8dnxkPPTPaIvTwzY+KTOkAdmiEqu2r2+4FETqtG002nxUbGZhscHFqgpTSxiaqihvkA2Z1zdNE9ZCZJA3vFWq14EqmDoy14zF1d0KRwyMJPbluaf6pOPBUORhVO6nMiqtfZSX/0fAzrLaeSfyw+CVH/u974he820C1viPpFFRMeWDMGoHzKILCb6juXRx8JvVn5/Ti8mJ+QeJq+zDaOXzCBgc9e9mcZWJuP4N51fvp+ZddrOsfaI6CeA==
 sidebar_class_name: "delete api-method"
-info_path: docs/tmsapi/tms-web-api
+info_path: tmsapi/terminal-and-merchant-management-system-tms-web-api
 custom_edit_url: null
+sidebar_position: 9
 ---
 
 import ApiTabs from "@theme/ApiTabs";
@@ -22,18 +23,18 @@ import SchemaItem from "@theme/SchemaItem";
 import SchemaTabs from "@theme/SchemaTabs";
 import TabItem from "@theme/TabItem";
 
-<h1 className={"openapi__heading"}>Deletes an existing merchant.</h1>
+<h1 className={"openapi__heading"}>Delete a merchant</h1>
 
 <MethodEndpoint method={"delete"} path={"/partner/partner/{partnerId}/merchant/{merchantId}"}></MethodEndpoint>
 
 
 
-This endpoint will delete the merchant profile from the TMS.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted.
+This endpoint will delete the merchant profile from the terminal management system.  If the merchant has terminals assigned when trying to delete it, you will receive an error.  Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted.
 
 
 ## Request
 
-<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"partnerId","required":true,"in":"path","description":"It is the ID of the partner who owns the merchant.","schema":{"type":"string","description":"It is the ID of your partner profile (provided by Handpoint)\n","maxLength":50,"minLength":1,"title":"PartnerID"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"merchantId","required":true,"in":"path","description":"It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.","schema":{"type":"string","description":"It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants.  Handpoint will provide a range of IDs that can be used for this purpose.\n","maxLength":20,"minLength":1,"title":"MerchantID"}}}></ParamsItem></ul></div></details><div><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+<details style={{"marginBottom":"1rem"}} className={"openapi-markdown__details"} data-collapsed={false} open={true}><summary style={{}}><h3 className={"openapi-markdown__details-summary-header-params"}>Path Parameters</h3></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"partnerId","required":true,"in":"path","description":"Your partner ID.","schema":{"type":"string","description":"ID of your partner profile (provided by Handpoint)\n","maxLength":50,"minLength":1,"title":"PartnerID"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"merchantId","required":true,"in":"path","description":"The ID of the merchant to be deleted.","schema":{"type":"string","description":"It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants.  Handpoint will provide a range of IDs that can be used for this purpose.\n","maxLength":20,"minLength":1,"title":"MerchantID"}}}></ParamsItem></ul></div></details><div><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
 
 OK
 

@@ -3,6 +3,7 @@ sidebar_position: 1
 slug: /
 ---
 
+
 # Introduction
 
 **Introduction to the Terminal Management System (TMS) API**
@@ -24,3 +25,4 @@ Our API's versatility and user-centric design promise to revolutionize how you h
 Harness the power of advanced terminal management. Dive into the future with the TMS API.
 
 Don't forget to take a look at the [Postman collection](tmsapidownloads.md) that we have available.
+

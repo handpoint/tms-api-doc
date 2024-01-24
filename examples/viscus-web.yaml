@@ -1,0 +1,2280 @@
+openapi: "3.0.0"
+info:
+  title: Terminal and Merchant Management System (TMS) Web API
+  version: 0.0.1-RC10
+  description: >
+    The TMS API gives Handpoint partners the description of the operations needed 
+    to efficiently manage their merchants and terminals.
+servers:
+  - url: https://portal.handpoint.com
+    description: prod API base endpoint
+paths:
+  /ops/login:
+    post:
+      summary: Authenticate against the API
+      description: >
+        The login endpoint returns a JSON web token that should be used in the 
+        Authorization header of all subsequent requests.
+      operationId: login
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TmsWebUser'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/devices/assign:
+    put:
+      summary: Create a payment terminal
+      description: >
+        This endpoint will create a payment terminal under your partner profile.
+        It will be added to your pool of unassigned terminals.
+      operationId: createUnassignedTerminal
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner Id (provided by Handpoint).
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      requestBody:
+        description: The terminal information to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnassignedPayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/device/{terminalType}/{serialNumber}/partner/{partnerId}:
+    delete:
+      summary: Delete a payment terminal
+      description: >
+        This endpoint will delete a terminal from the terminal management system.
+        The terminal needs to be unassigned from any merchant for this operation to be successful.
+      operationId: deleteUnassignedTerminal
+      tags:
+        - Terminal
+      parameters:
+        - name: terminalType
+          required: true
+          in: path
+          description: Type of the terminal to be deleted.
+          schema:
+            $ref: "#/components/schemas/TerminalType"
+        - name: serialNumber
+          required: true
+          in: path
+          description: Serial number of the terminal to be deleted.
+          schema:
+            $ref: "#/components/schemas/SerialNumber"
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner from which the terminal will be deleted.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/publish/{terminalType}/{serialnumber}:
+    post:
+      summary: Publish a payment terminal configuration to the Handpoint Gateway
+      description: >
+        Using data from your partner profile as well as the acquirer and merchant profile,
+        this endpoint will push the automatically generated terminal configuration to the Handpoint Gateway. 
+        For the terminal to properly start up and initialise, 
+        it is required for the terminal configuration to be published to the Handpoint Gateway.
+        For example, this endpoint needs to be called after assigning a terminal to a merchant.
+      operationId: publishTerminal
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: terminalType
+          required: true
+          in: path
+          description: Type of terminal to be published.
+          schema:
+            $ref: "#/components/schemas/TerminalType"
+        - name: serialnumber
+          required: true
+          in: path
+          description: Serial number of the terminal to be assigned.
+          schema:
+            $ref: "#/components/schemas/SerialNumber"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/terminal:
+    post:
+      summary: Retrieves a list of unassigned terminals for the partner.
+      description: >
+        This endpoint will list the terminals of the partner that are no
+        assigned to a merchant. It can apply a search filter for the results.
+      operationId: listUnassignedTerminals
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: It is the ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      requestBody:
+        description: The page to be retrieved.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPagePayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPageResults'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/{merchantId}/terminal:
+    post:
+      summary: Retrieves a list of assigned terminals for a merchant.
+      description: >
+        This endpoint will list the assigned terminals of a merchant.
+        It can apply a search filter for the results.
+      operationId: listMerchantAssignedTerminals
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: It is the ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: It is the ID of the merchant who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      requestBody:
+        description: The page to be retrieved.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPagePayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPageResults'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/terminal/assigned:
+    post:
+      summary: Retrieves a list of assigned terminals for the partner.
+      description: >
+        This endpoint will list the terminals of the partner that are
+        assigned to merchants. It can apply a search filter for the results.
+      operationId: listAssignedTerminals
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: It is the ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      requestBody:
+        description: The page to be retrieved.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPagePayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPageResults'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/terminal/{terminalType}/{serialnumber}:
+    delete:
+      summary: Unassign a payment terminal from a merchant
+      description: >
+        This endpoint will unassign a terminal from its merchant.
+        It is necessary to publish the configuration after this operation 
+        to keep the terminal management system in sync with the Handpoint Gateway.
+        This operation will leave the terminal unassigned from any merchant and will
+        become part of the pool of terminals ready to be assigned.
+      operationId: unassignTerminal
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: terminalType
+          required: true
+          in: path
+          description: Type of terminal to be unassigned.
+          schema:
+            $ref: "#/components/schemas/TerminalType"
+        - name: serialnumber
+          required: true
+          in: path
+          description: Serial number of the terminal to be unassigned.
+          schema:
+            $ref: "#/components/schemas/SerialNumber"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Assign a payment terminal to a merchant
+      description: >
+        Takes an already created terminal (part of the pool of unassigned terminals)
+        and assigns it to an already existing merchant. 
+        A terminal can only be assigned to one merchant at a time. 
+        If it is already assigned to another merchant you will receive an error. 
+        It is necessary to publish the terminal configuration to the Handpoint
+        gateway after this operation.
+      operationId: assignTerminal
+      tags:
+        - Terminal
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: terminalType
+          required: true
+          in: path
+          description: Type of terminal to be assigned.
+          schema:
+            $ref: "#/components/schemas/TerminalType"
+        - name: serialnumber
+          required: true
+          in: path
+          description: Serial number of the terminal to be assigned.
+          schema:
+            $ref: "#/components/schemas/SerialNumber"
+      requestBody:
+        description: The assigment data to be used.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignPayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/merchant:
+    post:
+      summary: Retrieves a list of merchants for the partner.
+      description: >
+        This endpoint will list the merchants of the partner.
+      operationId: listMerchants
+      tags:
+        - Merchant
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: It is the ID of the partner who owns the terminal.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      requestBody:
+        description: The page to be retrieved.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPagePayload'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPageResults'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/partner/{partnerId}/merchant/{merchantId}:
+    delete:
+      summary: Delete a merchant
+      description: >
+        This endpoint will delete the merchant profile from the terminal management system. 
+        If the merchant has terminals assigned when trying to delete it, you will receive an error. 
+        Terminals assigned to the merchant first need to be unassigned before the merchant can be deleted.
+      operationId: deleteMerchant
+      tags:
+        - Merchant
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: The ID of the merchant to be deleted.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Retrieve a merchant profile
+      description: >
+        Gets the profile of an existing merchant, including authentication information like shared secret. 
+        Depending on the details of the merchant (acquirer, features enabled etc.),
+        the response back will vary in terms of fields.
+      operationId: getMerchant
+      tags:
+        - Merchant
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: ID of the merchant to be retrieved.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+        - name: detail
+          required: true
+          in: query
+          description: Merchant Profile.
+          schema:
+            type: string
+            enum: [ "merchantobject", "merchantlite", "merchantid" ]
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a merchant
+      description: >
+        This endpoint creates a new merchant under your partner profile.
+        The body of the request will need data aligned with your partner
+        configuration, i.e. ISV id used, acquirer id used, etc.
+      operationId: createMerchant
+      tags:
+        - Merchant
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. Handpoint will provide a range of IDs that can be used for this purpose.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      requestBody:
+        description: The merchant to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Merchant'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an already created merchant
+      description: >
+        This endpoint updates an already created merchant under your partner profile.
+        The body of the request will need data aligned with your partne
+        configuration, i.e. ISV id used, acquirer id used, etc.
+        Once updated, if the merchant has assigned terminal, the changes should be published 
+        to the Handpoint Gateway.
+      operationId: updateMerchant
+      tags:
+        - Merchant
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: ID of the merchant to be updated.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      requestBody:
+        description: The merchant to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Merchant'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/cloudpos/partner/{partnerId}/enabled:
+    get:
+      summary: Retrieve the cloud status of a partner
+      description: >
+        Allows you to know if a partner is cloud enabled, meaning that the partner is able to send transactions over the cloud to payment terminals using a cloud API key .
+      operationId: getPartnerCloudPosEnabled
+      tags:
+        - PartnerCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerCloudPosEnabled'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/cloudpos/{partnerId}/keys:
+    get:
+      summary: Retrieve the API key(s) of a partner
+      description: >
+        Gets the list of cloud API keys previously created for the partner.
+      operationId: getPartnerApiKeys
+      tags:
+        - PartnerCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerCloudPosKeys'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a cloud API key for a partner
+      description: >
+        Creates a new cloud API key for a partner. The API response will return the API key unmasked.
+      operationId: createPartnerApiKey
+      tags:
+        - PartnerCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+      requestBody:
+        description: The name for the API key to be created. The name is used as part of the randomisation process generating the API key.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCloudPosApiKey'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedPartnerCloudPosApiKey'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/cloudpos/{partnerId}/keys/{keyName}:
+    delete:
+      summary: Delete a cloud API key for a partner
+      description: >
+        Deletes a cloud api key for a partner.
+      operationId: deletePartnerApiKey
+      tags:
+        - PartnerCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: ID of the partner.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: keyName
+          required: true
+          in: path
+          description: Name of the API key to be deleted.
+          schema:
+            type: string
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/cloudpos/partner/{partnerId}/merchant/{merchantId}/keys:
+    get:
+      summary: Retrieve the cloud API keys of a merchant
+      description: >
+        Gets the list of cloud API keys previously created for the merchant.
+      operationId: getMerchantApiKeys
+      tags:
+        - MerchantCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: ID of the merchant.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantCloudPosKeys'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a cloud API key for a merchant
+      description: >
+        Creates a new cloud API key for a merchant. The API response will contain the API key unmasked.
+      operationId: createMerchantApiKey
+      tags:
+        - MerchantCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: ID of the merchant.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+      requestBody:
+        description: The name for the API key to be created. The name is used as part of the randomisation process generating the API key.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCloudPosApiKey'
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedMerchantCloudPosApiKey'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /partner/cloudpos/partner/{partnerId}/merchant/{merchantId}/keys/{keyName}:
+    delete:
+      summary: Delete a cloud API key of a merchant
+      description: >
+        Deletes a cloud API key from a merchant.
+      operationId: deleteMerchantApiKey
+      tags:
+        - MerchantCloudPos
+      parameters:
+        - name: partnerId
+          required: true
+          in: path
+          description: Your partner ID.
+          schema:
+            $ref: "#/components/schemas/PartnerID"
+        - name: merchantId
+          required: true
+          in: path
+          description: ID of the merchant.
+          schema:
+            $ref: "#/components/schemas/MerchantID"
+        - name: keyName
+          required: true
+          in: path
+          description: Name of the API key to be deleted.
+          schema:
+            type: string
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    PartnerID:
+      type: string
+      description: >
+        ID of your partner profile (provided by Handpoint)
+      maxLength: 50
+      minLength: 1
+    MerchantID:
+      type: string
+      description: >
+        It is a unique Handpoint ID for the merchant, it must be unique across ALL TMS merchants. 
+        Handpoint will provide a range of IDs that can be used for this purpose.
+      maxLength: 20
+      minLength: 1
+    TmsWebUser:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: The username of your terminal management system (TMS) account.
+          type: string
+          maxLength: 50
+        password:
+          description: The password of your terminal management system (TMS) account.
+          type: string
+          writeOnly: true
+    ListPagePayload:
+      type: object
+      required:
+        - initPosition
+        - limit
+      properties:
+        initPosition:
+          type: integer
+          minimum: 0
+          description: Start the page from this element position.
+        limit:
+          type: integer
+          minimum: 1
+          description: Number of elements to retrieve in the page.
+        search:
+          type: string
+          description: >
+            Apply search term as filter for results.
+            Will look among multiple attributes if the search term is included.
+    ListPageResults:
+      type: object
+      properties:
+        totalRecordsCount:
+          type: integer
+          description: Total number of records found.
+        initPosition:
+          type: integer
+          description: Position of the first element retrieved.
+        batchSize:
+          type: integer
+          description: Number of records in this page.
+        previousBatchAvailable:
+          type: boolean
+          description: True if there are elements before the retrieved page.
+        nextBatchAvailable:
+          type: boolean
+          description: True if there are elements after the retrieved page.
+        terminals:
+          type: array
+          description: Elements in the retrieved page.
+          items:
+            $ref: "#/components/schemas/TerminalLite"
+        merchants:
+          type: array
+          description: Elements in the retrieved page.
+          items:
+            $ref: "#/components/schemas/MerchantLite"
+    LoginResponse:
+      type: object
+      properties:
+        tokenDetails:
+          type: object
+          properties:
+            accessToken:
+              description: Token value to use in the Authorization header of all subsequent requests.
+              type: string
+            refreshToken:
+              description: Refresh token value to use in the Authorization header of all subsequent requests.
+              type: string
+            scopes:
+              description: Scopes granted to the user.
+              type: string
+            expirationDatetime:
+              description: Expiration date/time of the token.
+              type: string
+        user:
+          type: object
+          properties:
+            username:
+              description: The username logged in.
+              type: string
+            name:
+              description: Name of the user logged in.
+              type: string
+            email:
+              description: Email of the user logged in.
+              type: string
+            role:
+              description: Role of the user logged in.
+              type: string
+            created:
+              description: Creation date/time of the user.
+              type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+        reason:
+          type: string
+          description: Reason of the error.
+        messageGuid:
+          type: string
+          description: Message guid of the error.
+    Protocol:
+      type: string
+      description: >
+        The acquirer to which transactions will be sent to by the payment terminals. 
+        ViscusDummy is a simulator used for testing purposes.
+      enum:
+        - AMEX
+        - BORGUN
+        - EVO
+        - OMNIPAY
+        - PostBridge
+        - TNS
+        - TSYS
+        - VANTIV
+        - ViscusDummy
+    ProtocolData:
+      type: object
+      required:
+        - acquirerMid
+        - protocol
+      properties:
+        protocol:
+          $ref: "#/components/schemas/Protocol"
+        acquirerMid:
+          type: string
+          description: >
+            It is the merchant id provided by the acquirer.
+          maxLength: 100
+        authorizedMids:
+          type: array
+          description: >
+            Additional merchant ids provided by the acquirer.
+          items:
+            type: string
+            description: Value of the merchant id provided by the acquirer.
+            maxLength: 50
+        defaultAcquirerTid:
+          type: string
+          description: >
+            It is the terminal id provided by the acquirer. Some acquirers do not provide a terminal Id in which case passing a unique 8 digit value would work as well (ideally the last 8 digits of the terminal serial number).
+          maxLength: 100
+        debitCardOnly:
+          type: boolean
+          description: >
+            It is a flag to indicate if the terminal should only accept debit cards. If activated, the terminal will start declining all transactions made with credit cards. 
+            This feature is supported by all acquirers except TNS.
+          default: false
+        currencies:
+          type: array
+          description: >
+            The list of currencies configured on the acquirer level (usually this is a single currency) 
+            Use the ISO 4217 code for the currency.
+          items:
+            type: string
+        gwConfigDummyFlag:
+          type: string
+          description: >
+            For Handpoint internal use only.
+          default: A
+          readOnly: true
+        supportsMoto:
+          type: boolean
+          description: >
+            This flag enables support for MOTO transactions from the payment terminal (only available for some acquirers)
+          default: false
+        motoCvvMandatory:
+          type: boolean
+          description: >
+            For merchants with MOTO enabled, we can configure if entering the CVV value (3-4 digits at the back of the card) is mandatory or not.
+          default: false
+    Agreement:
+      type: object
+      description: >
+        An agreement is the specific configuration of a merchant/payment terminal against the acquirer.
+        For example, some acquirers require an MID, TID and acquirer ID others require an host capture pos id and authentication code etc.
+      required:
+        - acquirer
+        - merchant
+      properties:
+        acquirer:
+          type: string
+          description: >
+            This is the ID of the acquirer(s) assigned to your partner profile in the handpoint systems. It will be provided by the Handpoint team.
+          maxLength: 50
+        acquirerMid:
+          type: string
+          description: Merchant id provided by the acquirer for the merchant.
+          maxLength: 100
+        merchant:
+          $ref: "#/components/schemas/MerchantID"
+        currencies:
+          type: array
+          description: >
+            The list of currencies configured on the acquirer level (usually this is a single currency) 
+            Use the ISO 4217 code for the currency.
+          minItems: 1
+          items:
+            type: string
+        protocolData:
+          type: array
+          description: >
+            It is the specific configuration for the acquirer(s) assigned to your partner profile. Ask Handpoint about which values are required per acquirer.
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/ProtocolData"
+        debitCardOnly:
+          type: boolean
+          description: >
+            If any of the protocol data in the agreement has the debitCardOnly flag set to true,
+            then this flag will be set to true.
+          default: false
+          readOnly: true
+    CustomConfig:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          description: >
+            The key of the custom configuration.
+        value:
+          type: string
+          description: >
+            The value of the custom configuration.
+    TipBlock:
+      type: object
+      properties:
+        option:
+          type: string
+        blockNo:
+          type: string
+    TipList:
+      type: object
+      properties:
+        TipBlock:
+          type: array
+          items:
+            $ref: "#/components/schemas/TipBlock"
+    CardTokenProviderInfo:
+      type: object
+      required:
+        - cardTokenProviderId
+      properties:
+        cardTokenProviderId:
+          type: string
+          description: >
+            The ID of the card token provider.
+        cardTokenProviderType:
+          type: object
+          description: >
+            The type of the card token provider.
+          readOnly: true
+          properties:
+            typeName:
+              type: string
+              description: >
+                The name of the card token provider type.
+              readOnly: true
+            category:
+              type: string
+              description: >
+                The category of the card token provider type.
+              readOnly: true
+            clientIdRequired:
+              type: boolean
+              description: >
+                Indicates if the client id is required for the card token provider type.
+              readOnly: true
+        clientId:
+          type: string
+          description: >
+            The client id of the card token provider.
+        apiKey:
+          type: string
+          description: >
+            The API key of the card token provider.
+        partnerSupportsTokenization:
+          type: boolean
+          description: >
+            Indicates if the partner supports tokenization.
+          default: false
+          readOnly: true
+        anyApiKeyDefinedByPartner:
+          type: boolean
+          description: >
+            Indicates if the partner has any API key defined.
+          default: false
+          readOnly: true
+        anyApiKeyDefinedByIsv:
+          type: boolean
+          description: >
+            Indicates if the isv has any API key defined.
+          default: false
+          readOnly: true
+    TerminalType:
+      type: string
+      description: >
+        Terminal type supported by the TMS.
+        They may belong to different brands: Pax, Telpo, Datecs or Virtual Terminals.
+      enum:
+        - MPED400
+        - MPED800
+        - HILITE
+        - HIPLUS
+        - HIPRO
+        - HIFIVE
+        - BP50PLUS
+        - PAXA920
+        - PAXA80
+        - PAXA77
+        - PAXA50
+        - PAX30
+        - PAXA35
+        - PAXA60
+        - PAXA910
+        - PAXA920PRO
+        - PAXA930
+        - PAXARIES6
+        - PAXARIES8
+        - PAXE500
+        - PAXE700
+        - PAXE800
+        - PAXA800
+        - PAXIM30
+        - TELPOTPS900
+        - TELPOTPS988
+        - TELPOTPS989
+        - TELPOTPS328
+        - TELPOTPS300
+        - TELPOTPS
+        - VT
+    SerialNumber:
+      type: string
+      description: >
+        The serial number of the terminal.
+      maxLength: 20
+    TerminalLite:
+      type: object
+      description: Terminal basic information.
+      properties:
+        brand:
+          type: string
+          description: Brand of the terminal.
+          enum:
+            - DATECS
+            - PAX
+            - TELPO
+            - VIRTUAL
+          readOnly: true
+        terminalType:
+          $ref: "#/components/schemas/TerminalType"
+        serialNumber:
+          $ref: "#/components/schemas/SerialNumber"
+        architecture:
+          type: string
+          description: Architecture of the terminal.
+          enum:
+            - MIPS
+            - ARM
+            - ANDROID
+            - NONE
+          readOnly: true
+        softwareVersion:
+          type: string
+          description: Software version configured for the terminal.
+          readOnly: true
+        acquirerTerminalId:
+          type: string
+          description: Terminal ID configured at the acquirer
+          readOnly: true
+        terminalStatus:
+          type: string
+          description: >
+            Status of the terminal:
+             * U - INACTIVE_UNASSIGNED
+             * I - INACTIVE_CHANGED
+             * C - ACTIVE_CHANGED
+             * A - ACTIVE_UNCHANGED
+             * D - PENDING_DELETION
+             * Z - INACTIVE_ERROR
+             * X - ACTIVE_ERROR
+          enum:
+            - U
+            - I
+            - C
+            - A
+            - D
+            - Z
+            - X
+          readOnly: true
+        partnerId:
+          $ref: "#/components/schemas/PartnerID"
+        partnerFullName:
+          type: string
+          description: The name of the partner. This will be provided by Handpoint
+          readOnly: true
+        merchantId:
+          $ref: "#/components/schemas/MerchantID"
+        merchantName:
+          type: string
+          description: The name of the merchant.
+          maxLength: 100
+          readOnly: true
+        creationDate:
+          type: string
+          description: Creation date time of the terminal.
+          readOnly: true
+        lastModifiedDate:
+          type: string
+          description: Modification date time of the terminal.
+          readOnly: true
+    MerchantLite:
+      type: object
+      description: Merchant basic information.
+      properties:
+        merchantId:
+          $ref: "#/components/schemas/MerchantID"
+        merchantName:
+          type: string
+          description: The name of the merchant.
+          maxLength: 100
+          readOnly: true
+        merchantCategoryCode:
+          type: string
+          description: 4 digit code that identifies the merchant's business type.
+          maxLength: 4
+          readOnly: true
+        partnerId:
+          $ref: "#/components/schemas/PartnerID"
+        partnerFullName:
+          type: string
+          description: The name of the partner. This will be provided by Handpoint
+          readOnly: true
+        partnerCloudPosEnabled:
+          type: boolean
+          description: True if partner has cloud api access enabled. Handpoint will enable this parameter on your partner profile.
+          default: false
+          readOnly: true
+        isvId:
+          type: string
+          description: TMS ISV ID associated with the merchant. Handpoint will provide the list of ISV id's associated to your partner profile.
+          maxLength: 50
+          readOnly: true
+        isvName:
+          type: string
+          description: ISV name associated with the merchant. Handpoint will provide the list of ISV names associated to your partner profile.
+          readOnly: true
+        email:
+          type: string
+          description: The email of the merchant.
+          maxLength: 100
+          readOnly: true
+        assignedTerminalsCount:
+          type: integer
+          description: Number of terminals assigned to the merchant.
+          readOnly: true
+        anyTerminalAssigned:
+          type: boolean
+          description: True if there is a least one terminal assigned to the merchant.
+          readOnly: true
+        hasAnyAndroidDevice:
+          type: boolean
+          description: True if there is a least one terminal with android architecture assigned to the merchant.
+          readOnly: true
+        creationDate:
+          type: string
+          description: Creation date time of the merchant.
+          readOnly: true
+        lastModifiedDate:
+          type: string
+          description: Modification date time of the merchant.
+          readOnly: true
+        terminals:
+          type: array
+          description: List of terminals assigned to the merchant.
+          items:
+            $ref: "#/components/schemas/TerminalLite"
+          readOnly: true
+        currencies:
+          type: array
+          description: >
+            The list of currencies configured on the acquirer level (usually this is a single currency) 
+            Use the ISO 4217 code for the currency.
+          items:
+            type: string
+          minItems: 1
+          readOnly: true
+        agreements:
+          type: array
+          description: An agreement is the acquirer specific configuration for the merchant.
+          maxItems: 1
+          items:
+            $ref: "#/components/schemas/Agreement"
+          readOnly: true
+        merchantExternalId:
+          type: string
+          description: For some acquirers this is the configured merchant id at acquirer side.
+          readOnly: true
+        zipCode:
+          type: string
+          description: The zip code of the merchant's address.
+          maxLength: 100
+          readOnly: true
+        city:
+          type: string
+          description: The city of the merchant's address.
+          maxLength: 100
+          readOnly: true
+        addressLine1:
+          type: string
+          description: First line of the merchant's address.
+          maxLength: 100
+          readOnly: true
+        countryCodeAlpha2:
+          type: string
+          description: The country code of the merchant's address. ISO 3166 Alpha 2.
+          maxLength: 2
+          readOnly: true
+        tipFlag:
+          type: boolean
+          description: Enable tip functionality in the merchant. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          default: false
+          readOnly: true
+        showTipAdjustmentLine:
+          description: Show tip adjustment line in the receipt. It is only used if tipFlag is true. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          type: boolean
+          default: false
+          readOnly: true
+        tipList:
+          type: array
+          description: Tip list configured for the merchant. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          items:
+            $ref: "#/components/schemas/TipList"
+    Merchant:
+      type: object
+      description: >
+        A merchant is a business that uses an Handpoint payment terminal to process transactions.
+        It is the main entity in the TMS.
+      required:
+        - merchantId
+        - merchantName
+        - city
+        - addressLine1
+        - zipCode
+        - countryCodeAlpha2
+        - phone
+        - email
+        - merchantCategoryCode
+        - sharedSecret
+        - partnerId
+      properties:
+        merchantId:
+          $ref: "#/components/schemas/MerchantID"
+        merchantName:
+          type: string
+          description: The name of the merchant.
+          maxLength: 100
+        partnerFullName:
+          type: string
+          description: Your partner name. This will be provided by Handpoint
+          readOnly: true
+        locationName:
+          type: string
+          description: The name of the merchant's location.
+          maxLength: 100
+        addressLine1:
+          type: string
+          description: First line of the merchant's address.
+          maxLength: 100
+        addressLine2:
+          type: string
+          description: Second line of the merchant's address.
+          maxLength: 100
+        zipCode:
+          type: string
+          description: The zip code of the merchant's address.
+          maxLength: 100
+        city:
+          type: string
+          description: The city of the merchant's address.
+          maxLength: 100
+        countryCodeAlpha2:
+          type: string
+          description: The country code of the merchant's address. ISO 3166 Alpha 2.
+          maxLength: 2
+        phone:
+          type: string
+          description: The phone number of the merchant. It must have the country code included. For example 00447539591287 for a UK number.
+          maxLength: 100
+        email:
+          type: string
+          description: The email of the merchant.
+          maxLength: 100
+        otherEmails:
+          type: array
+          description: Additional emails of the merchant.
+          items:
+            type: string
+        merchantCategoryCode:
+          type: string
+          description: 4 digit code that identifies the merchant's business type.
+          maxLength: 4
+        currencies:
+          type: array
+          description: Currencies supported by this merchant. It depends on the acquirer in the agreement.
+          readOnly: true
+          items:
+            type: string
+        sharedSecret:
+          type: string
+          description: Shared secret used to tie the merchant with the payment terminal(s), used for authentication.
+          maxLength: 100
+        partnerId:
+          $ref: "#/components/schemas/PartnerID"
+        isvId:
+          type: string
+          description: TMS ISV ID associated with the merchant. Handpoint will provide the list of ISV id's associated to your partner profile.
+          maxLength: 50
+        isvName:
+          type: string
+          description: ISV name associated with the merchant. Handpoint will provide the list of ISV names associated to your partner profile.
+          readOnly: true
+        agreements:
+          type: array
+          description: An agreement is the acquirer specific configuration for the merchant.
+          maxItems: 1
+          items:
+            $ref: "#/components/schemas/Agreement"
+        customConfig:
+          type: array
+          description: Custom configuration for the merchant.
+          items:
+            $ref: "#/components/schemas/CustomConfig"
+        tipList:
+          type: array
+          description: Tip list configured for the merchant. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          items:
+            $ref: "#/components/schemas/TipList"
+        tipFlag:
+          type: boolean
+          description: Enable tip functionality in the merchant. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          default: false
+        showTipAdjustmentLine:
+          description: Show tip adjustment line in the receipt. It is only used if tipFlag is true. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          type: boolean
+          default: false
+        anyTerminalAssigned:
+          type: boolean
+          description: True if the merchant has terminals assigned in the TMS.
+          default: false
+          readOnly: true
+        hasAnyAndroidDevice:
+          type: boolean
+          description: True if the merchant has android terminals assigned in the TMS (PAX or Telpo).
+          default: false
+          readOnly: true
+        defaultCardReaderLanguage:
+          description: Initial language configured for the payment terminal. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+          type: string
+        partnerCloudPosEnabled:
+          type: boolean
+          description: True if partner has cloud API access enabled. Handpoint will enable this parameter on your partner profile.
+          default: false
+          readOnly: true
+        cardTokenProviderInfo:
+          $ref: "#/components/schemas/CardTokenProviderInfo"
+        customReceiptTemplate:
+          type: string
+          description: >
+            Custom receipt template for the merchant, instead of the default 
+            receipt configured in the acquirer agreement. Optional
+        customHomeScreen:
+          type: string
+          description: >
+            Custom home screen for the merchant, instead of the default 
+            home screen configured in the acquirer agreement.
+            Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+        enableAccountTypeSelection:
+          type: boolean
+          description: >
+            Allow the merchant to select the account type in the terminal. Only relevant for setting up Datecs 
+            terminals, not relevant for PAX or Telpo.
+          default: false
+        defaultCloudMode:
+          type: boolean
+          description: >
+            If true the Handpoint Payments app for PAX terminals will start in integrated mode.
+            Not relevant for Datecs devices.
+          default: false
+        eCommerceMID:
+          type: array
+          description: List of ids for this merchant at a ecommerce provider.
+          items:
+            type: string
+            description: ecom id provided by ecom provider.
+            maxLength: 50
+        refundAllowed:
+          type: boolean
+          description: Allow refund operations for the payment terminal.
+          default: false
+        refundOriginalCardOnly:
+          type: boolean
+          description: Only allow refund operations with the original card used for the initial sale transaction.
+          default: false
+        preAuthAllowed:
+          type: boolean
+          description: Allow pre-auth operations for the payment terminal.
+          default: false
+        theme:
+          type: string
+          description: >
+            Theme ID configured for the merchant. A theme allows you to customize the logos and colors
+            appearing ih the Handpoint payments app for PAX devices to match your brand.
+            Contact the Handpoint team if you want us to build a theme for your terminals. Not relevant for Datecs devices.
+          maxLength: 50
+        creationDate:
+          type: string
+          description: Creation date time of the merchant.
+          readOnly: true
+    CustomField:
+      type: object
+      properties:
+        acquirerTerminalId:
+          type: string
+          description: Acquirer terminal id customized.
+    CustomFieldsByProtocol:
+      type: object
+      required:
+        - protocol
+      properties:
+        protocol:
+          type: string
+          description: Protocol applied to the custom fields.
+        customFields:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomField"
+    UnassignedTerminalData:
+      type: object
+      required:
+        - deviceType
+        - serialNumber
+        - partner
+      properties:
+        deviceType:
+          $ref: "#/components/schemas/TerminalType"
+        serialNumber:
+          $ref: "#/components/schemas/SerialNumber"
+        partner:
+          $ref: "#/components/schemas/PartnerID"
+    UnassignedPayload:
+      type: object
+      required:
+        - partner
+      properties:
+        partner:
+          $ref: "#/components/schemas/PartnerID"
+        multipleTypeAssignments:
+          type: array
+          description: >
+            List of terminals that will be created at partner level and added to your pool of unassigned devices.
+            Once created, the terminals can be assigned to merchants.
+          items:
+            $ref: "#/components/schemas/UnassignedTerminalData"
+    AssignPayload:
+      type: object
+      required:
+        - terminalType
+        - serialNumber
+        - partnerId
+        - merchantId
+        - zipCode
+        - city
+        - countryCodeAlpha2
+        - addressLine1
+      properties:
+        terminalType:
+          $ref: "#/components/schemas/TerminalType"
+        terminalTypeLabel:
+          type: string
+        serialNumber:
+          $ref: "#/components/schemas/SerialNumber"
+        terminalStatus:
+          type: string
+          description: >
+            The status of the terminal, for assign operation the previous status should be UNASSIGNED.
+          enum:
+            - U
+        partnerId:
+          $ref: "#/components/schemas/PartnerID"
+        merchantId:
+          $ref: "#/components/schemas/MerchantID"
+        locationName:
+          type: string
+          description: >
+            Location of the payment terminal
+            If empty, the merchant's location address will be used.
+        addressLine1:
+          type: string
+          description: >
+            Address line 1 of the payment terminal 
+             If empty, the merchant's address will be used.
+        zipCode:
+          type: string
+          description: >
+            Zip code of the payment terminal
+            If empty, the merchant's zip code will be used.
+        city:
+          type: string
+          description: >
+            City of the payment terminal
+             If empty, the merchant's city will be used.
+        countryCodeAlpha2:
+          type: string
+          description: >
+            Country code Alpha 2 of the payment terminal
+            If empty, the merchant's country code will be used.
+        phone:
+          type: string
+          description: >
+            Phone number of the merchant associated with the payment terminal
+            If empty, the merchant's phone number will be used.
+        email:
+          type: string
+          description: >
+            E-mail associated with the payment terminal
+            If empty, the merchant's email will be used.
+        tipFlag:
+          type: boolean
+          description: >
+            Enable the tip functionality for the payment terminals. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+            This will override the merchant's tip flag value.
+          default: false
+        showTipAdjustmentLine:
+          type: boolean
+          description: >
+            Show tip adjustment line in the receipt. Only relevant for setting up Datecs terminals, not relevant for PAX or Telpo.
+            It is only used if tipFlag is true.
+            This will override the merchant's tip flag value.
+          default: false
+        softwareVersion:
+          type: string
+          description: Use this software version instead of the default one.
+        useDefaultApp:
+          type: boolean
+          description: Uses the default account selection (checking) on the payment terminal. Only relevant for setting up Datecs terminals in South Africa, not relevant for PAX or Telpo.
+          default: false
+        customFieldsByProtocol:
+          type: array
+          description: >
+            Custom fields to be used for the terminal configuration. Ask Handpoint about which acquirer custom fields need to be used for your partner profile. 
+            If empty, the merchant's custom fields will be used.
+          items:
+            $ref: "#/components/schemas/CustomFieldsByProtocol"
+    PartnerCloudPosEnabled:
+      type: object
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+          description: >
+            True if cloud connectivity is enabled.
+          default: false
+    PartnerCloudPosKeys:
+      type: object
+      required:
+        - keyList
+      properties:
+        keyList:
+          type: array
+          description: List of API keys created for the partner.
+          items:
+            $ref: "#/components/schemas/PartnerMaskedCloudPosKey"
+    PartnerMaskedCloudPosKey:
+      type: object
+      required:
+        - key
+        - keyName
+        - partnerIdAlpha
+      properties:
+        key:
+          type: string
+          description: >
+            The API key masked value.
+        keyName:
+          type: string
+          description: >
+            The API key name.
+        partnerIdAlpha:
+          $ref: "#/components/schemas/PartnerID"
+    CreatedPartnerCloudPosApiKey:
+      type: object
+      required:
+        - key
+        - keyName
+        - partnerIdAlpha
+      properties:
+        key:
+          type: string
+          description: >
+            The API key unmasked value.
+        keyName:
+          type: string
+          description: >
+            The API key name.
+        partnerIdAlpha:
+          $ref: "#/components/schemas/PartnerID"
+    MerchantCloudPosKeys:
+      type: object
+      required:
+        - keyList
+      properties:
+        keyList:
+          type: array
+          description: List of API keys created for the merchant.
+          items:
+            $ref: "#/components/schemas/MerchantMaskedCloudPosKey"
+    MerchantMaskedCloudPosKey:
+      type: object
+      required:
+        - key
+        - keyName
+        - maskedKey
+        - merchantIdAlpha
+      properties:
+        key:
+          type: string
+          description: >
+            The API key masked value.
+        keyName:
+          type: string
+          description: >
+            The API key name.
+        maskedKey:
+          type: string
+          description: >
+            The API key masked value.
+        merchantIdAlpha:
+          $ref: "#/components/schemas/MerchantID"
+    CreateCloudPosApiKey:
+      type: object
+      required:
+        - keyName
+      properties:
+        keyName:
+          type: string
+          maxLength: 20
+          description: >
+            The API key name.
+    CreatedMerchantCloudPosApiKey:
+      type: object
+      required:
+        - key
+        - keyName
+        - merchantIdAlpha
+      properties:
+        key:
+          type: string
+          description: >
+            The API key unmasked value.
+        keyName:
+          type: string
+          description: >
+            The API key name.
+        merchantIdAlpha:
+          $ref: "#/components/schemas/MerchantID"

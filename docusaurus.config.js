@@ -5,13 +5,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Handpoint',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://tmsdoc.handpoint.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon:'img/favicon.png',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'tmsapiprod', // Usually your GitHub org/user name.
+  projectName: 'tmsapiprod.github.io', // Usually your repo name.
   deploymentBranch: 'main',
 
   presets: [
@@ -62,9 +62,8 @@ const config = {
         style: 'dark',
         logo: {
           alt: 'My Site Logo',
-          src: '/img/handpoint-logo-hvitt.svg',
+          src: 'img/handpoint-logo-hvitt.svg',
           width: 75,
-          href: 'https://developer.handpoint.com/',
         },
         items: [
           {

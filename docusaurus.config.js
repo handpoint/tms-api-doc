@@ -100,7 +100,15 @@ const config = {
               {
                 label: 'Online Payments Docs',
                 href: 'https://developer-ecomm.handpoint.com/',
-              }
+              },
+              {
+                label: 'Transaction Analytics API',
+                href: 'https://txnfeedapi.handpoint.com/',
+              },
+              {
+                label: 'Merchants & Terminals Management API',
+                href: 'https://tmsdoc.handpoint.com/',
+              },
             ],
           },
           {

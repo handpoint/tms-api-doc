@@ -9,4 +9,4 @@ Below is a Postman collection to get started with the TMS API integration. In th
 **(*) Actions that will require a Publish config to the Gateway.**
 
 
-[Download this Postman Collection](/files/Handpoint_TMS_API_2024.json.zip)
+[Download this Postman Collection](/files/Handpoint_TMS_API.json.zip)

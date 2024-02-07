@@ -64,6 +64,7 @@ const config = {
           alt: 'My Site Logo',
           src: 'img/handpoint-logo-hvitt.svg',
           width: 75,
+          href: 'https://developer.handpoint.com/',
         },
         items: [
           {

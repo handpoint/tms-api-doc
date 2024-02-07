@@ -292,3 +292,14 @@ html[data-theme='dark'] {
   content: "patch";
   background-color: var(--openapi-code-orange);
 }
+
+
+/* Removes the REQUEST API container */
+.openapi-explorer__request-form {
+  display: none;  
+}
+
+/* Removes the RESPOSNE API container */
+.openapi-explorer__response-container {
+  display: none;
+}

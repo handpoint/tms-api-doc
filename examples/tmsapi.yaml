@@ -1424,8 +1424,10 @@ components:
             type: string
         sharedSecret:
           type: string
-          description: Shared secret used to tie the merchant with the payment terminal(s), used for authentication.
-          maxLength: 100
+          description: 64 hexadecimal characters used to authenticate the card reader and the mobile app. TMS accepts any case, and stores and returns the value in uppercase.
+          minLength: 64
+          maxLength: 64
+          pattern: '^[0-9A-Fa-f]{64}$'
         partnerId:
           $ref: "#/components/schemas/PartnerID"
         isvId:
